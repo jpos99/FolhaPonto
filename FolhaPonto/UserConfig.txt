@@ -1,0 +1,11 @@
+nome: João Pedro de Oliveira Soares
+funcao: Desenvolvedor Jr2
+cnpj:35.402.821/0001-39
+nome_fantasia:OBJECTIVE PROFESSIONAL SERVICES
+footer: "Resumo horas extras
+Normais (50%);;=> todas as Horas Extras de 2a a Sábado, 
+NÃO SUBTRAIR as horas noturnas Especiais (100%);;=> todas as Horas Extras em Domingos/Feriados, NÃO SUBTRAIR as horas noturnas
+Sobreaviso :;; => horas NÃO trabalhadas durante sobreaviso (total de horas em sobreaviso - horas de acionamentos)
+Noturnas:;; => todas as Horas Extras de 22:00 às 06:00
+Assinatura do colaborador: João Pedro de Oliveira Soares
+Assinatura do responsável:"
