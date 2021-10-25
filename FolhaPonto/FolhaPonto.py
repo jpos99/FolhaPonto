@@ -89,6 +89,7 @@ def calculate_day_working_schedule():
 def write_to_csv(linha_horarios):
 
     tabela_horarios = verify_if_csv_file_exsists()
+    breakpoint()
     tabela_horarios.write(linha_horarios)
     tabela_horarios.close()
 
@@ -182,11 +183,6 @@ def header_assembler(data_inicio, data_fim):
     ws.row_dimensions[5].height = 40
 
     wb.save(xlsx_file)
-    linha4 = f'{mes_ano};;;{data_inicio}; a ;{data_fim}\n'
-    linha5 = 'Data;Horário de Entrada;Entrada no Intervalo;Saida do Intervalo;Horŕio de Saída; Stand by\n'
-
-    cabecalho = linha1 + linha2 + linha3 + linha4 + linha5
-    print(cabecalho)
     return cabecalho
 
 
@@ -205,10 +201,10 @@ def main():
     
     day = colect_dates()
     data_fim = calculate_end_date(day)
-    cabecalho = header_assembler(day,data_fim)
-    #ask_for_csv_file_name_with_path()
+    #cabecalho = header_assembler(day,data_fim)
+    ask_for_csv_file_name_with_path()
     #write_to_csv(cabecalho)
-    #monta_tabela_horarios(day,data_fim)
+    monta_tabela_horarios(day,data_fim)
     #footer = footer_assembler()
     #write_to_csv(footer)
     exit()
