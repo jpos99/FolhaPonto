@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
     <head>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "#calendario" ).datepicker({dateFormat: 'yy-mm-dd',
+                                                changeMonth: true,
+                                                changeYear: true});
+            });
+        </script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>FOLHA-PONTO</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <img src="temposmodernos.jpg">
+        <img id="banner" src="temposmodernos.jpg">
         <h1>Folha Ponto</h1>
-        <h2>Configuração</h2>
         <div class="container">
             <div class="page-header">
-
-                <label>Mês e ano</label>
-                <input>
-                <br>
-                <label>Data de inicio do periodo</label>
-                <input>
+                <p>Nome do arquivo csv: <input type="text" id="csvfile" size="15"/>.csv</p>
             </div>
             <table class="table table-striped table-responsive table-bordered">
                 <thead class="thead-default">
                 </thead>
                 <tbody>
                     <tr>
-                        <label>Mês e ano</label>
+                        <p>Data de inicio do periodo: <input type="text" id="calendario" /></p>
                     </tr>
                 </tbody>
             </table>

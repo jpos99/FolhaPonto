@@ -1,6 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
+
+class UserConfiguration:
+
 
 @app.route('/inicio')
 def inicio():
