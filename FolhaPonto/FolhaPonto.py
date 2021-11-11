@@ -19,42 +19,39 @@ def colect_dates():
     return data_inicio
 
 def calculate_end_date(data_inicio):
-    
     data_fim = data_inicio + relativedelta(months=1) - relativedelta(days=1)
 
     return data_fim
 
+
 def ask_for_csv_file_name_with_path():
-    
     global csv_file
     if len(csv_file) == 0:
         csv_file = filedialog.asksaveasfilename()
     return csv_file
 
+
 def verify_if_csv_file_exsists():
-    
     if exists(csv_file):
         tabela_horarios = open(csv_file, 'a')
         return tabela_horarios
-    
     else:
         create_csv_file()
 
+
 def create_csv_file():
-
     tabela_horarios = open(csv_file, 'w')
-
     return tabela_horarios
+
 
 def format_into_hour_minute(valor_float):
     hour = int(valor_float)
     minutes = int((valor_float % 1)*60)
     hour = str(hour).zfill(2)
-
     minutes = str(minutes).zfill(2)
     horario = f'{hour}:{minutes}'
-
     return horario
+
 
 def calculate_day_working_schedule():
     gap_in_minutes = 5
@@ -86,6 +83,7 @@ def calculate_day_working_schedule():
 
     return linha_horarios
 
+
 def write_to_csv(linha_horarios):
 
     tabela_horarios = verify_if_csv_file_exsists()
@@ -114,7 +112,7 @@ def monta_tabela_horarios(day, data_fim):
             day = day + timedelta(days=1)
     
 
-def header_assembler(data_inicio, data_fim):
+'''def header_assembler(data_inicio, data_fim):
     wb = openpyxl.Workbook()
     xlsx_file = 'FolhaPonto.xlsx'
 
@@ -194,7 +192,7 @@ def get_user_config():
                     (config[1].split(':')[0]):(config[1].split(':')[1].replace('\n', '').strip()),
                     (config[2].split(':')[0]):(config[2].split(':')[1].replace('\n', '').strip()),
                     (config[3].split(':')[0]):(config[3].split(':')[1].replace('\n', '').strip())}
-    return nome, funcao, dict_company
+    return nome, funcao, dict_company'''
 
 def main():
 
@@ -209,4 +207,4 @@ def main():
     #write_to_csv(footer)
     exit()
 
-main()
+#main()
