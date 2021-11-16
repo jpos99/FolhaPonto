@@ -1,0 +1,23 @@
+{% extends "FrontPage.html" %}
+{% block content %}
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+        <th>Data</th>
+        <th>Entrada</th>
+        <th>Saida Almoço</th>
+        <th>Volta Almoço</th>
+        <th>Saida</th>
+        </thead>
+        <tbody>
+            {% for day in list_of_dates %}
+            <tr>
+                <td>{{ day.date }}</td>
+                <td>{{ day.start_hour }}</td>
+                <td>{{ day.out_to_lunch }}</td>
+                <td>{{ day.in_from_lunch }}</td>
+                <td>{{ day.stop_hour }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

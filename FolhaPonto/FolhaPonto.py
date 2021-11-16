@@ -2,6 +2,7 @@ from os.path import exists
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from tkinter import filedialog
+from FolhaPontoMODELS import fullDay
 from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import RowDimension
 import openpyxl
@@ -9,28 +10,6 @@ import random
 
 
 csv_file = ''
-
-
-def colect_dates():
-
-    data_inicio = input("inserir data inicial (dd-mm-yyyy) : ")
-    data_inicio = datetime.strptime(data_inicio, '%d-%m-%Y').date()
-
-    return data_inicio
-
-def calculate_end_date(data_inicio):
-    data_fim = data_inicio + relativedelta(months=1) - relativedelta(days=1)
-
-    return data_fim
-
-
-def ask_for_csv_file_name_with_path():
-    global csv_file
-    if len(csv_file) == 0:
-        csv_file = filedialog.asksaveasfilename()
-    return csv_file
-
-
 def verify_if_csv_file_exsists():
     if exists(csv_file):
         tabela_horarios = open(csv_file, 'a')
@@ -44,44 +23,106 @@ def create_csv_file():
     return tabela_horarios
 
 
-def format_into_hour_minute(valor_float):
-    hour = int(valor_float)
-    minutes = int((valor_float % 1)*60)
-    hour = str(hour).zfill(2)
-    minutes = str(minutes).zfill(2)
-    horario = f'{hour}:{minutes}'
-    return horario
+def format_into_hour_minute(valor_in_minutes):
+    if valor_in_minutes != '':
+        hour = valor_in_minutes//60
+        minutes = int((valor_in_minutes % 60))
+        hour = str(hour).zfill(2)
+        minutes = str(minutes).zfill(2)
+        return f'{hour}:{minutes}'
+    return valor_in_minutes
+
+def ask_for_csv_file_name_with_path():
+    global csv_file
+    if len(csv_file) == 0:
+        csv_file = filedialog.asksaveasfilename()
+    return csv_file
 
 
-def calculate_day_working_schedule():
-    gap_in_minutes = 5
-    start_hour = random.randint(((9 * 60) - gap_in_minutes), ((9 * 60) + gap_in_minutes)) / 60
-    out_to_break = random.randint(((12 * 60) - gap_in_minutes), ((12 * 60) + gap_in_minutes)) / 60
-    in_from_break = random.randint(((13 * 60) - gap_in_minutes), ((13 * 60) + gap_in_minutes)) / 60
-    stop_hour = random.randint(((18 * 60) - gap_in_minutes), ((18 * 60) + gap_in_minutes)) / 60
-    aceptable = False
+def convert_str_to_date(date_str):
+    date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    return date
 
-    while not aceptable:
-        start_hour = round(random.randint(((9 * 60) - gap_in_minutes), ((9 * 60) + gap_in_minutes)) / 60, 2)
-        out_to_break = round(random.randint(((12 * 60) - gap_in_minutes), ((12 * 60) + gap_in_minutes)) / 60, 2)
-        in_from_break = round(random.randint(((13 * 60) - gap_in_minutes), ((13 * 60) + gap_in_minutes)) / 60, 2)
-        stop_hour = round(random.randint(((18 * 60) - gap_in_minutes), ((18 * 60) + gap_in_minutes)) / 60, 2)
 
-        if 8.15 > (stop_hour - in_from_break) + (out_to_break - start_hour) > 7.85 \
-                and ((stop_hour - in_from_break) + (out_to_break - start_hour)) != 8:
-            aceptable = True
+def calculate_end_date(initial_date, date_of_end):
+    if date_of_end == '':
+        return initial_date + relativedelta(months=1) - relativedelta(days=1)
+    return convert_str_to_date(date_of_end)
 
-    start_hour_str = format_into_hour_minute(start_hour)
 
-    out_to_break_str = format_into_hour_minute(out_to_break)
+def assemble_days_list(day, final_date):
+    list_of_dates = []
+    while day <= final_date:
+        list_of_dates.append(day)
+        day += timedelta(days=1)
+    return list_of_dates
 
-    in_from_break_str = format_into_hour_minute(in_from_break)
 
-    stop_hour_str = format_into_hour_minute(stop_hour)
+def convert_strdate_to_intminutes(date_str):
+    return int(date_str.split(':')[1]) + (int(date_str.split(':')[0])*60)
 
-    linha_horarios = f'{start_hour_str};{out_to_break_str};{in_from_break_str};{stop_hour_str}\n'
 
-    return linha_horarios
+def randomizing_schedules(dict_config_in_minutes, date):
+    date["start_hour"] = round(random.randint((dict_config_in_minutes["begin_hour"] - dict_config_in_minutes["tolerance"]),
+                                              (dict_config_in_minutes["begin_hour"] + dict_config_in_minutes["tolerance"])), 2)
+    date["out_to_break"] = round(random.randint((dict_config_in_minutes["begin_lunch"] - dict_config_in_minutes["tolerance"]),
+                                                (dict_config_in_minutes["begin_lunch"] + dict_config_in_minutes["tolerance"])), 2)
+    date["in_from_break"] = round(random.randint((dict_config_in_minutes["end_lunch"] - dict_config_in_minutes["tolerance"]),
+                                                 (dict_config_in_minutes["end_lunch"] + dict_config_in_minutes["tolerance"])), 2)
+    date["stop_hour"] = round(random.randint((dict_config_in_minutes["end_hour"] - dict_config_in_minutes["tolerance"]),
+                                             (dict_config_in_minutes["end_hour"] + dict_config_in_minutes["tolerance"])), 2)
+    return date
+
+def convert_standard_schedules_in_minutes(dict_config):
+    dict_config["tolerance"] = int(dict_config["tolerance"])
+    dict_config["begin_hour"] = convert_strdate_to_intminutes(dict_config["begin_hour"])
+    dict_config["begin_lunch"] = convert_strdate_to_intminutes(dict_config["begin_lunch"])
+    dict_config["end_lunch"] = convert_strdate_to_intminutes(dict_config["end_lunch"])
+    dict_config["end_hour"] = convert_strdate_to_intminutes(dict_config["end_hour"])
+    return dict_config
+
+
+def validate_acptable_schedules(dict_config_in_minutes, date):
+    if (dict_config_in_minutes["standard_work_hours"] + dict_config_in_minutes["tolerance"]) > (date["stop_hour"] - date["in_from_break"]) + \
+            (date["out_to_break"] - date["start_hour"]) > (dict_config_in_minutes["standard_work_hours"] - dict_config_in_minutes["tolerance"]) and \
+            ((date["stop_hour"] - date["in_from_break"]) + (date["out_to_break"] - date["start_hour"])) % 60 != 0:
+        return True
+    return False
+
+
+def calculate_day_working_schedules(dict_config_in_minutes, date):
+    print(dict_config_in_minutes["has_saturday"])
+    if date["date"].weekday() > dict_config_in_minutes["has_saturday"]:
+        date["start_hour"] = ''
+        date["out_to_break"] = ''
+        date["in_from_break"] = ''
+        date["stop_hour"] = ''
+        return date
+    date = randomizing_schedules(dict_config_in_minutes, date)
+    while not validate_acptable_schedules(dict_config_in_minutes, date):
+            date = randomizing_schedules(dict_config_in_minutes, date)
+    return date
+
+def assemble_period_schedules(dict_config, list_of_days):
+    date = {}
+    list_of_dates = []
+    dict_config_in_minutes = convert_standard_schedules_in_minutes(dict_config)
+    dict_config_in_minutes["standard_work_hours"] = (dict_config_in_minutes["begin_lunch"]-dict_config_in_minutes["begin_hour"]) + \
+                          (dict_config_in_minutes["end_hour"]- dict_config_in_minutes["end_lunch"])
+
+    for day in list_of_days:
+
+        date["date"] = day
+        date = calculate_day_working_schedules(dict_config_in_minutes, date)
+        date["date"] = day.strftime('%d/%m/%Y')
+        date["start_hour"] = format_into_hour_minute(date["start_hour"])
+        date["out_to_break"] = format_into_hour_minute(date["out_to_break"])
+        date["in_from_break"] = format_into_hour_minute(date["in_from_break"])
+        date["stop_hour"] = format_into_hour_minute(date["stop_hour"])
+        print(date)
+        date_obj = fullDay(date)
+        list_of_dates.append(date_obj)
+    return list_of_dates
 
 
 def write_to_csv(linha_horarios):
@@ -99,7 +140,7 @@ def monta_tabela_horarios(day, data_fim):
         print(line_to_write)
         if 5 > day.weekday():
 
-            linha_horarios = calculate_day_working_schedule()
+            linha_horarios = calculate_day_working_schedules()
             line_to_write = line_to_write + linha_horarios
             write_to_csv(line_to_write)
 
@@ -197,9 +238,9 @@ def get_user_config():
 def main():
 
     
-    day = colect_dates()
+    day = convert_str_to_date()
     data_fim = calculate_end_date(day)
-    #cabecalho = header_assembler(day,data_fim)
+    #cabecalho = header_assembler(fullDay,data_fim)
     ask_for_csv_file_name_with_path()
     #write_to_csv(cabecalho)
     monta_tabela_horarios(day,data_fim)
