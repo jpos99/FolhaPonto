@@ -9,7 +9,7 @@ def calculate_schedules(dict_config):
     final_date = calculate_end_date(initial_date, dict_config["date_of_end"])
     list_of_days = assemble_days_list(initial_date,final_date)
     return assemble_period_schedules(dict_config, list_of_days)
-    # monta_tabela_horarios(fullDay, data_fim)
+
 
 
 @app.route('/')
@@ -36,9 +36,8 @@ def generate_hours_table():
     dict_config = {"date_of_end": date_of_end, "date_of_begin": date_of_begin, "tolerance": minutes_of_tolerance,
                    "has_saturday": has_saturday, "begin_hour": begin_hour,"begin_lunch": begin_lunch,
                    "end_lunch":end_lunch, "end_hour": end_hour}
-    print(dict_config["begin_hour"])
+
     list_of_dates = calculate_schedules(dict_config)
-    #print(list_of_dates)
 
     return render_template('SchedulesTable.html', titulo='Folha Ponto', list_of_dates=list_of_dates)
 
