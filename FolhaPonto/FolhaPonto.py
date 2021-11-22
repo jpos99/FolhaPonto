@@ -61,7 +61,7 @@ def convert_standard_schedules_in_minutes(dict_config):
     return dict_config
 
 
-def validate_acptable_schedules(dict_config_in_minutes, date):
+def validate_aceptable_schedules(dict_config_in_minutes, date):
     if (dict_config_in_minutes["standard_work_hours"] + dict_config_in_minutes["tolerance"]) > (
             date["stop_hour"] - date["in_from_break"]) + (date["out_to_break"] - date["start_hour"]) > (
             dict_config_in_minutes["standard_work_hours"] - dict_config_in_minutes["tolerance"]) and (
@@ -78,7 +78,7 @@ def calculate_day_working_schedules(dict_config_in_minutes, date):
         date["stop_hour"] = ''
         return date
     date = randomizing_schedules(dict_config_in_minutes, date)
-    while not validate_acptable_schedules(dict_config_in_minutes, date):
+    while not validate_aceptable_schedules(dict_config_in_minutes, date):
         date = randomizing_schedules(dict_config_in_minutes, date)
     return date
 
@@ -101,3 +101,9 @@ def assemble_period_schedules(dict_config, list_of_days):
         date_obj = fullDay(date)
         list_of_dates.append(date_obj)
     return list_of_dates
+
+def calculate_schedules(dict_config):
+    initial_date = convert_str_to_date(dict_config["date_of_begin"])
+    final_date = calculate_end_date(initial_date, dict_config["date_of_end"])
+    list_of_days = assemble_days_list(initial_date,final_date)
+    return assemble_period_schedules(dict_config, list_of_days)

@@ -1,15 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
 from FolhaPonto import *
 
+
 app = Flask(__name__)
-
-
-def calculate_schedules(dict_config):
-    initial_date = convert_str_to_date(dict_config["date_of_begin"])
-    final_date = calculate_end_date(initial_date, dict_config["date_of_end"])
-    list_of_days = assemble_days_list(initial_date,final_date)
-    return assemble_period_schedules(dict_config, list_of_days)
-
 
 
 @app.route('/')
