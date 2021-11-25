@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>FOLHA-PONTO</title>
+    </head>
+    <body>
+        <div class="container" >
+            <div class="page-header">
+                <h1>{{ titulo }}</h1>
+            </div>
+                <form action="" method="post" >
+                    {{ form.hidden_tag() }}
+                    <table style="width:100%">
+                        <tr>
+                            <td>
+                                <p>
+                                    {{ form.date_of_begin.label }} <br>
+                                    {{ form.date_of_begin(size=10) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.work_on_saturday.label }} <br>
+                                    {{ form.work_on_saturday }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.tolerance_in_minutes.label }} <br>
+                                    {{ form.tolerance_in_minutes(size=1) }}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    {{ form.date_of_end.label }} <br>
+                                    {{ form.date_of_end(size=10) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.begin_hour.label }} <br>
+                                    {{ form.begin_hour(size=10) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.begin_lunch.label }} <br>
+                                    {{ form.begin_lunch(size=10) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.end_lunch.label }} <br>
+                                    {{ form.end_lunch(size=10) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{ form.end_hour.label }} <br>
+                                    {{ form.end_hour(size=10) }}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    {{ form.submit() }}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        <hr>
+            <div>
+                {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
