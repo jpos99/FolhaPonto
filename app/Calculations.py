@@ -1,6 +1,6 @@
 from datetime import timedelta, time
 from dateutil.relativedelta import relativedelta
-from app.FolhaPontoMODELS import fullDay
+from app.FolhaPontoMODELS import FullDay
 import random
 
 '''
@@ -15,7 +15,7 @@ def calculate_schedules(form):
 
 
 def calculate_end_date(initial_date, date_of_end):
-    if date_of_end == '':
+    if date_of_end == None:
         return initial_date + relativedelta(months=1) - relativedelta(days=1)
     return date_of_end
 
@@ -40,7 +40,7 @@ def assemble_days_list(form):
     list_of_dates = []
     day = form.date_of_begin.data
     while day <= form.date_of_end.data:
-        full_day = fullDay(day, form)
+        full_day = FullDay(day)
         calculate_day_working_schedules(form, full_day)
         list_of_dates.append(full_day)
         day += timedelta(days=1)
