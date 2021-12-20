@@ -12,10 +12,10 @@
             {% for day in list_of_dates %}
             <tr>
                 <td>{{ day.date }}</td>
-                <td>{{ day.start_hour }}</td>
-                <td>{{ day.out_to_lunch }}</td>
-                <td>{{ day.in_from_lunch }}</td>
-                <td>{{ day.stop_hour }}</td>
+                <td>{{ day.day_schedules[0] }}</td>
+                <td>{{ day.day_schedules[1] }}</td>
+                <td>{{ day.day_schedules[2] }}</td>
+                <td>{{ day.day_schedules[3] }}</td>
             </tr>
             {% endfor %}
         </tbody>

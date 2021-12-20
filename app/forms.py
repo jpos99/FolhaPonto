@@ -4,8 +4,7 @@ from wtforms.validators import DataRequired, Optional
 from datetime import datetime
 
 
-
-class UserInitialConfiguration(FlaskForm):
+class FormUserConfiguration(FlaskForm):
 
     date_of_begin = DateField('Data Inicial', validators=[DataRequired()])
     date_of_end = DateField('Data Final', validators=[Optional()])
