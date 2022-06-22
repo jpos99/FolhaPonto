@@ -1,1 +1,1 @@
-web: gunicorn gerador-folha-ponto: python3 FolhaPonto.py
+web: gunicorn worker: python3 FolhaPonto.py
