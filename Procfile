@@ -1,1 +1,1 @@
-web: gunicorn app: FolhaPonto
+web: gunicorn app: FolhaPonto.py
