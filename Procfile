@@ -1,1 +1,1 @@
-web: gunicorn worker: python3 FolhaPonto.py
+web: gunicorn app: python3 FolhaPonto.py
