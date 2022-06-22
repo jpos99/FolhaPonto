@@ -11,8 +11,8 @@
         <tbody>
             {% for day in list_of_dates %}
             <tr>
-                <td>{{ day.date }}</td>
-                <td>{{ day.start_hour }}</td>
+                <td>{{ day.date|date:"d/m/Y" }}</td>
+                <td>{{ day.start_hour|date:"H:i" }}</td>
                 <td>{{ day.out_to_lunch }}</td>
                 <td>{{ day.in_from_lunch }}</td>
                 <td>{{ day.stop_hour }}</td>
