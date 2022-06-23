@@ -1,4 +1,4 @@
-from datetime import timedelta, time
+from datetime import timedelta, time, datetime
 from dateutil.relativedelta import relativedelta
 from app.FolhaPontoMODELS import fullDay
 import random
@@ -28,6 +28,7 @@ def calculate_day_work_hours(form):
 
 
 def convert_schedules_in_minutes(schedule):
+    print(type(schedule))
     schedule_in_minutes = (schedule.hour * 60) + schedule.minute
     return schedule_in_minutes
 
@@ -51,10 +52,10 @@ def calculate_day_working_schedules(form, full_day):
     aceptable_schedules = False
     if is_work_day(form.work_on_saturday.data, full_day):
         while not aceptable_schedules:
-            full_day.start_hour = randomize_schedule(form.begin_hour.data, form.tolerance_in_minutes.data)
-            full_day.out_to_lunch = randomize_schedule(form.begin_lunch.data, form.tolerance_in_minutes.data)
-            full_day.in_from_lunch = randomize_schedule(form.end_lunch.data, form.tolerance_in_minutes.data)
-            full_day.stop_hour = randomize_schedule(form.end_hour.data, form.tolerance_in_minutes.data)
+            full_day.start_hour = randomize_schedule(form.begin_hour.data, form.tolerance_in_minutes.data, full_day.date)
+            full_day.out_to_lunch = randomize_schedule(form.begin_lunch.data, form.tolerance_in_minutes.data, full_day.date)
+            full_day.in_from_lunch = randomize_schedule(form.end_lunch.data, form.tolerance_in_minutes.data, full_day.date)
+            full_day.stop_hour = randomize_schedule(form.end_hour.data, form.tolerance_in_minutes.data, full_day.date)
             aceptable_schedules = validate_aceptable_schedules(full_day, form)
 
 
@@ -68,14 +69,15 @@ def is_work_day(saturday, full_day):
     return work_day
 
 
-def randomize_schedule(schedule, tolerance):
+def randomize_schedule(schedule, tolerance, date):
     randomized_schedule = random.randint((convert_schedules_in_minutes(schedule) - tolerance),
                                          (convert_schedules_in_minutes(schedule) + tolerance))
-    return convert_to_date(randomized_schedule)
+    return convert_to_date(randomized_schedule, date)
 
 
-def convert_to_date(schedule_in_minutes):
-    return time((schedule_in_minutes // 60), (schedule_in_minutes % 60))
+def convert_to_date(schedule_in_minutes, date):
+    schedule = time((schedule_in_minutes // 60), (schedule_in_minutes % 60))
+    return datetime.combine(date, schedule)
 
 
 def validate_aceptable_schedules(full_day, form):

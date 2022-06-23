@@ -11,11 +11,31 @@
         <tbody>
             {% for day in list_of_dates %}
             <tr>
-                <td>{{ day.date|date:"d/m/Y" }}</td>
-                <td>{{ day.start_hour }}</td>
-                <td>{{ day.out_to_lunch }}</td>
-                <td>{{ day.in_from_lunch }}</td>
-                <td>{{ day.stop_hour }}</td>
+                <td>{{ day.date.strftime('%d/%m/%Y') }}</td>
+                {% if (day.start_hour.strftime('%H:%M')) == '00:00' %}
+                    <td></td>
+                {% else %}
+                    <td>{{ day.start_hour.strftime('%H:%M') }}</td>
+                {% endif %}
+
+                {% if (day.out_to_lunch.strftime('%H:%M')) == '00:00' %}
+                    <td></td>
+                {% else %}
+                    <td>{{ day.out_to_lunch.strftime('%H:%M') }}</td>
+                {% endif %}
+
+                {% if (day.in_from_lunch.strftime('%H:%M')) == '00:00' %}
+                    <td></td>
+                {% else %}
+                    <td>{{ day.in_from_lunch.strftime('%H:%M') }}</td>
+                {% endif %}
+
+                {% if (day.stop_hour.strftime('%H:%M')) == '00:00' %}
+                    <td></td>
+                {% else %}
+                    <td>{{ day.stop_hour.strftime('%H:%M') }}</td>
+                {% endif %}
+
             </tr>
             {% endfor %}
         </tbody>
